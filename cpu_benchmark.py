@@ -9,16 +9,12 @@ import os
 import signal
 from ultralytics import YOLO
 
-# ==========================================
-# 1. 설정
-# ==========================================
-MODEL_FILE = "best.pt"       # .pt 파일 경로
+
+MODEL_FILE = "best.pt"       
 SAVE_VIDEO_PATH = "cpu_benchmark_result.mp4"
 CSV_FILENAME = "cpu_resource_log.csv"
 
-# ==========================================
-# [시스템 감시자] (어제와 동일한 스펙)
-# ==========================================
+
 class SystemMonitor:
     def __init__(self, filename=CSV_FILENAME, interval=1.0):
         self.filename = filename
@@ -26,7 +22,7 @@ class SystemMonitor:
         self.running = False
         self.thread = None
         self.start_time_ref = None
-        plt.switch_backend('Agg') # 화면 표시 없이 백그라운드에서 그래프 생성
+        plt.switch_backend('Agg') 
        
         with open(self.filename, mode='w', newline='') as file:
             writer = csv.writer(file)
@@ -45,7 +41,7 @@ class SystemMonitor:
             try:
                 curr_t = time.time() - self.start_time_ref
                 cpu = psutil.cpu_percent(interval=None)
-                mem = psutil.virtual_memory().used / (1024 * 1024) # MB 단위
+                mem = psutil.virtual_memory().used / (1024 * 1024) 
                 temp = self.get_cpu_temp()
                
                 with open(self.filename, mode='a', newline='') as file:
@@ -85,16 +81,16 @@ class SystemMonitor:
 
             fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(10, 12), sharex=True)
            
-            # CPU 그래프
+            
             ax1.plot(times, cpus, color='tab:blue', label='CPU Usage')
             ax1.set_ylabel('CPU (%)'); ax1.set_ylim(0, 100); ax1.grid(True); ax1.legend()
             ax1.set_title('System Resource Monitoring (CPU Only Mode)')
 
-            # 메모리 그래프
+            
             ax2.plot(times, mems, color='tab:green', label='Memory Used')
             ax2.set_ylabel('Memory (MB)'); ax2.grid(True); ax2.legend()
 
-            # 온도 그래프
+            
             ax3.plot(times, temps, color='tab:red', label='Temperature')
             ax3.axhline(y=80, color='gray', linestyle='--'); ax3.set_ylabel('Temp (C)'); ax3.grid(True); ax3.legend()
             ax3.set_xlabel('Time (s)')
@@ -107,22 +103,20 @@ class SystemMonitor:
         except Exception as e:
             print(f"[에러] 그래프 생성 실패: {e}")
 
-# ==========================================
-# [메인 실행]
-# ==========================================
+
 def run_cpu_benchmark():
-    # 모니터링 시작
+    
     monitor = SystemMonitor(filename=CSV_FILENAME)
     monitor.start()
 
-    # 카메라 설정
+    
     cap = cv2.VideoCapture(0)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
-    # 비디오 저장 설정
+    
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out = cv2.VideoWriter(SAVE_VIDEO_PATH, fourcc, 5.0, (640, 480)) # CPU는 느리니까 저장 FPS를 낮춤
+    out = cv2.VideoWriter(SAVE_VIDEO_PATH, fourcc, 5.0, (640, 480)) 
 
     print(f">>> [모델 로딩] {MODEL_FILE} (CPU 모드)... 잠시만 기다리세요.")
     try:
@@ -137,19 +131,18 @@ def run_cpu_benchmark():
             ret, frame = cap.read()
             if not ret: break
 
-            # YOLOv8 추론 (CPU)
-            # verbose=False: 터미널에 로그 너무 많이 뜨는 것 방지
+            
             results = model(frame, verbose=False)
            
-            # 결과 그리기
+            
             annotated_frame = results[0].plot()
 
-            # FPS 계산
+            
             curr_time = time.time()
             fps = 1 / (curr_time - prev_time + 1e-6)
             prev_time = curr_time
 
-            # 화면 표시
+            
             cv2.putText(annotated_frame, f"CPU FPS: {fps:.2f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             cv2.imshow("CPU Only Benchmark", annotated_frame)
             out.write(annotated_frame)
@@ -165,7 +158,7 @@ def run_cpu_benchmark():
         cap.release()
         out.release()
         cv2.destroyAllWindows()
-        monitor.stop() # 그래프 저장
+        monitor.stop() 
         print(">>> 프로그램 종료")
 
 if __name__ == "__main__":
