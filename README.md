@@ -9,10 +9,21 @@ To address the limitations of manual supervision and cloud-based architectures i
 The following datasets were used for this project.
 * Construction Site Safety Image Dataset Roboflow : https://www.kaggle.com/datasets/snehilsanyal/construction-site-safety-image-dataset-roboflow - For detecting people, helmets and vests
 
+본 프로젝트는 Kaggle의 'Construction Site Safety' 데이터셋을 재가공하여 사용했습니다.
+
+| 클래스 (Class) | 학습 (Train) | 검증 (Validation) | 테스트 (Test) | 합계 (Total Instances) | 비율 (Ratio) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Person (작업자)** | 10,026 | 163 | 181 | 10,370 | 63.0% |
+| **Hardhat (안전모)** | 2,889 | 70 | 103 | 3,062 | 18.6% |
+| **Safety Vest (조끼)** | 2,933 | 37 | 61 | 3,031 | 18.4% |
+| **합계 (Images)** | **2,605장** | **114장** | **82장** | **2,801장** | **100%** |
+
+> **Note:** 클래스 불균형(Imbalance)이 존재하지만, Person, Hardhat, Safety Vest 3가지 핵심 클래스를 중점적으로 학습했습니다.
+
 ## 🛠️ Environment (개발 환경)
-* **Hardware**: Raspberry Pi 4, Hailo-8L
-* **Language**: Python 3.8
-* **Libraries**: PyTorch, Hailo RT
+* **Hardware**: Raspberry Pi 5 (Broadcom BCM2712), Hailo-8 NPU
+* **Language**: Python 3.12.12
+* **Libraries**: PyTorch 2.9.0+cu126, Ultralytics YOLOv8.3.233, Hailo Dataflow Compiler v3.33.0
 
 ## 📊 Performance & Benchmark (실험 결과)
 `cpu_benchmark.py`와 `hailo_benchmark.py`를 통해 측정한 결과입니다.
