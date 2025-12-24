@@ -25,6 +25,33 @@ The following datasets were used for this project.
 * **Language**: Python 3.12.12
 * **Libraries**: PyTorch 2.9.0+cu126, Ultralytics YOLOv8.3.233, Hailo Dataflow Compiler v3.33.0
 
+## ⚙️ Training Configuration
+모델 학습에 사용된 주요 하이퍼파라미터 및 설정값입니다.
+
+| 분류 | 항목 (Item) | 설정값 (Value) | 목적 |
+| :--- | :--- | :--- | :--- |
+| **Model** | Architecture | **YOLOv8s** | 엣지 환경과 성능의 균형 (Small Model) |
+| **Params** | Input Size | 640 x 640 | 표준 입력 크기 |
+| | Max Epochs | 200 | 충분한 수렴을 위한 학습 횟수 |
+| | Batch Size | 16 | 메모리 자원 최적화 |
+| | Optimizer | Auto (AdamW/SGD) | 최적화 알고리즘 자동 선택 |
+| | Initial LR | 0.01 | 초기 학습률 |
+| **Augmentation** | Rotation | ±10° | 카메라/작업자 기울기 대응 |
+| | Mosaic | 1.0 | 배경 복잡성 및 밀집 객체 학습 |
+| | Erasing | 0.4 | 가려짐(Occlusion) 상황 대응 |
+
+## 🆚 Comparison with Previous Works
+기존 연구(Study A, Study B)와 비교하여, 본 프로젝트(Ours)는 **속도, 효율성, 프라이버시** 측면에서 가장 균형 잡힌 성능을 보입니다.
+
+| 구분 | Study B [2] (Server) | Study A [1] (Edge Old) | **Ours (Edge New)** |
+| :--- | :---: | :---: | :---: |
+| **하드웨어** | NVIDIA RTX A6000 | RPi 4 + Intel NCS2 | **RPi 5 + Hailo-8 NPU** |
+| **모델** | YOLOv7 (Heavy) | YOLOv4-tiny | **YOLOv8s (INT8)** |
+| **정확도 (mAP)** | 92.36% | 86.30% | **88.17%** |
+| **속도 (FPS)** | 28.65 | 6.80 (느림) | **32.99 (Real-time)** |
+| **네트워크 의존** | 높음 (Cloud 필수) | 없음 | **없음 (On-Device)** |
+| **비용/효율** | 고비용/고전력 | 저전력/저성능 | **저비용/고효율** |
+
 ## 📊 Performance & Benchmark (실험 결과)
 [cite_start]`cpu_benchmark.py`와 `hailo_benchmark.py`를 통해 측정한 성능 비교 결과입니다. [cite: 199, 269]
 
