@@ -1,15 +1,13 @@
-# ⛑️ Hongik PPE Project (개인 보호 장비 탐지 시스템)
+# ⛑️ Implementation and Performance Analysis of Lightweight Object Detection System for Real-time Construction Safety Monitoring on Edge Device
 
-라즈베리파이와 Hailo AI 가속기를 활용하여 작업자의 안전 장비 착용 여부를 실시간으로 탐지하는 프로젝트입니다.
+This project uses compatible Pi and Hailo AI accelerators to verify the use of safety equipment in imports.
 
 ## 📝 Abstract (소개)
-이 프로젝트는 건설 현장 등 위험 지역에서 작업자가 헬멧이나 조끼 등 보호 장비를 착용했는지 확인하기 위해 개발되었습니다. 
-Edge Device인 라즈베리파이에서 구동되며, 추론 속도 향상을 위해 Hailo 가속기를 사용했습니다.
+To address the limitations of manual supervision and cloud-based architectures in high-risk environments, this paper proposes a real-time Personal Protective Equipment (PPE) detection system implemented on a low-power edge device using a Raspberry Pi 5 and Hailo-8 NPU. By deploying a YOLOv8s model optimized via Post-Training Quantization (PTQ), we achieved a 54.7% reduction in model size while maintaining a high mAP@0.5 of 0.8817. Experimental results demonstrate that the proposed system reaches an inference speed of 32.99 FPS—an approximate 30-fold increase over CPU-only execution—thereby proving that a decentralized edge solution can effectively ensure bandwidth efficiency and privacy while delivering server-level performance for real-world safety monitoring.
 
-## 📂 Dataset (사용 데이터셋)
-본 프로젝트 학습에는 아래의 데이터셋들이 활용되었습니다.
-* **SH17 Dataset**: [링크 설명](링크주소) - 사람 및 헬멧 탐지용
-* **Custom Dataset**: 직접 수집한 현장 데이터 500장
+## 📂 Dataset 
+The following datasets were used for this project.
+* Construction Site Safety Image Dataset Roboflow : https://www.kaggle.com/datasets/snehilsanyal/construction-site-safety-image-dataset-roboflow - For detecting people, helmets and vests
 
 ## 🛠️ Environment (개발 환경)
 * **Hardware**: Raspberry Pi 4, Hailo-8L
